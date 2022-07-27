@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>SCQuorum</title>
+</head>
+<body class="con-body">
+    <div class="row-header">
+        <h1>SCQuorum</h1>
+    </div>
+    <div class="row-content">
+        <div class="col-left">
+            <h1>Register</h1>
+            {% with messages = get_flashed_messages(category_filter=["register"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            <p>{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <form action='/user_register' method='post'>
+                <label for='first_name'>First Name:</label>
+                <input type='text' name='first_name' value="{{session.first_name}}" required><br>
+                <label for='last_name'>Last Name:</label>
+                <input type='text' name='last_name' value="{{session.last_name}}" required><br>
+                <label for='email'>Email:</label>
+                <input type='text' name='email' value="{{session.email}}" required><br>
+                <label for='password'>Password:</label>
+                <input type='password' name='password' required><br>
+                <label for='password_confirm'>Confirm Password:</label>
+                <input type='password' name='password_confirm' required><br><br>
+                <input type='submit' value='Register'>
+            </form>
+        </div>
+        <div class="col-right">
+            <h1>Log in </h1>
+            {% with messages = get_flashed_messages(category_filter=["login"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            <p>{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <form action='/user_login' method='post'>
+                <label for='email'>Email:</label>
+                <input type='text' name='email' value="{{session.email_login}}" required><br>
+                <label for='password'>Password:</label>
+                <input type='password' name='password' required><br><br>
+                <input type='submit' value='Submit'>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

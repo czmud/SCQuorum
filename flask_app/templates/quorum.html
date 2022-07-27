@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>SCQuorum</title>
+</head>
+<body class="con-body">
+    <div class="row-header">
+        <div>
+            <a href="/library">Library</a>
+            <a href="/archives">Archives</a>
+            <a href="/quorum">Quorum</a>
+            <a href="/friends">Friends</a>
+        </div>
+        <h1>SCQuorum</h1>
+        <div>
+            {{users.full_name}}
+            <a href="/user_logout">Logout</a>
+        </div>
+    </div>
+    <div class="row-content">
+        <div class="col-center">
+            <h1>Quorum</h1>
+            {% for post in users.posts.values() %}
+                <br>--------------------<br>
+                <h3>{{post.users[0].full_name}}</h3>
+                <span>Posted at {{post.created_at}}</span>
+                <span>Excerpt: <i>"{{post.excerpt}}"</i></span>
+                <span>Thought: {{post.thought}}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>

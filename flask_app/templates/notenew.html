@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>SCQuorum</title>
+</head>
+<body class="con-body">
+    <div class="row-header">
+        <div>
+            <a href="/library">Library</a>
+            <a href="/quorum">Quorum</a>
+            <a href="/archives">Archives</a>
+        </div>
+        <h1>SCQuorum</h1>
+        <a href="/user_logout">Logout</a>
+    </div>
+    <div class="row-content">
+        <div class="col-center">
+            <h1>Draft New Note</h1>
+            <form action='/save_note' method='post'>
+                <label for='excerpt'>Excerpt:</label>
+                <input type='text' name='excerpt' value="{{session.excerpt}}" required><br>
+                <label for='url'>Link to Opinion:</label>
+                <input type='text' name='url' value="{{session.url}}" required><br>
+                <label for='thought'>Thought:</label>
+                <input type='text' name='thought' value="{{session.thought}}" required><br>
+                <input type='submit' value='Save'>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

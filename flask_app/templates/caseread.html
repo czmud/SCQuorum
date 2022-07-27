@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>SCQuorum</title>
+</head>
+<body class="con-body">
+    <div class="row-header">
+        <div>
+            <a href="/library">Library</a>
+            <a href="/archives">Archives</a>
+            <a href="/quorum">Quorum</a>
+            <a href="/friends">Friends</a>
+        </div>
+        <h1>SCQuorum</h1>
+        <div>
+            {{users.full_name}}
+            <a href="/user_logout">Logout</a>
+        </div>
+    </div>
+    <div class="row-content">
+        <div class="col-center">
+            <h1>{{cases.title}}</h1>
+            <span>{{cases.decision_date}}</span>
+            <H3>Majority Opinion delivered by: {{cases.maj_opinion_justice_id}}</H3>
+            <p>{{cases.opinion_text}}</p>
+            {% if cases.id not in users.cases %}    
+                <a href="/add_to_library/{{cases.id}}">Add to Library</a>
+            {% else %}
+                <a href="/remove_from_library/{{cases.id}}">Remove from Library</a>
+                <a href="#">Mark Complete!</a>
+            {% endif %}
+            <a href="{{cases.url}}" target="_blank">Read full text pdf</a>
+        </div>
+    </div>
+
+</body>
+</html>
