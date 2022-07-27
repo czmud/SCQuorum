@@ -1,64 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>SCQuorum</title>
-</head>
-<body class="con-body">
-    <div class="row-header">
-        <div>
-            <a href="/library">Library</a>
-            <a href="/archives">Archives</a>
-            <a href="/quorum">Quorum</a>
-            <a href="/friends">Friends</a>
-        </div>
-        <h1>SCQuorum</h1>
-        <div>
-            {{users.full_name}}
-            <a href="/user_logout">Logout</a>
-        </div>
-    </div>
-    <div class="row-content">
-        <div class="col-left">
-            <h1>Connect</h1>
-            {% for user in all_users %}
-                {% if user.id != users.id %}
-                    <br>--------------------<br>
-                    <h3>{{user.full_name}}</h3>
-                    {% if user.id in users.friends %}
-                        <span>friends</span>
-                    {% elif user.id in users.requests %}
-                        <a href="/decline_friend_request/{{user.id}}">Decline</a>
-                        <a href="/accept_friend_request/{{user.id}}">Accept</a>
-                    {% elif user.id in users.requesteds %}
-                        pending request
-                    {% else%}
-                        <a href="/send_friend_request/{{user.id}}">Request</a>
-                    {% endif %}
+{% extends "base.html" %}
+
+{% block page_content %}
+
+    <div class="col">
+        <h1>Connect</h1>
+        {% for user in all_users %}
+            {% if user.id != users.id and user.id not in users.friends and user.id not in users.requests %}
+                <br>--------------------<br>
+                <h3>{{user.full_name}}</h3>
+                {% if user.id in users.requesteds %}
+                    pending request
+                {% else%}
+                    <a class="btn btn-info" href="/send_friend_request/{{user.id}}" role="button">+Request</a>
                 {% endif %}
-            {% endfor %}
-        </div>
-        <div class="col-center">
-            <h1>Friends</h1>
-            {% for friend in users.friends.values() %}
-            <h3>{{friend.full_name}}</h3>
-            <br>
-            {% endfor %}
-        </div>
-        <div class="col-right">
-            <h1>Requests</h1>
-            {% for request in users.requests.values() %}
-            <h3>{{request.full_name}}</h3>
-            <a href="/decline_friend_request/{{request.id}}">Decline</a>
-            <a href="/accept_friend_request/{{request.id}}">Accept</a>
-            <br>
-            {% endfor %}
-
-        </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col">
+        <h1>Friends</h1>
+        {% for friend in users.friends.values() %}
+        <h3>{{friend.full_name}}</h3>
+        <br>
+        {% endfor %}
+    </div>
+    <div class="col">
+        <h1>Requests</h1>
+        {% for request in users.requests.values() %}
+        <h3>{{request.full_name}}</h3>
+        <a class="btn btn-warning" href="/decline_friend_request/{{request.id}}" role="button">Decline</a>
+        <a class="btn btn-success" href="/accept_friend_request/{{request.id}}" role="button">Accept</a>
+        <br>
+        {% endfor %}
     </div>
 
-</body>
-</html>
+{% endblock %}
