@@ -25,7 +25,7 @@
         <div class="col-center">
             <h1>{{cases.title}}</h1>
             <span>{{cases.decision_date}}</span>
-            <H3>Majority Opinion delivered by: {{cases.maj_opinion_justice_id}}</H3>
+            <H3>Majority Opinion delivered by: {{ cases.justices[cases.maj_opinion_justice_id].full_name }}</H3>
             <p>{{cases.opinion_text}}</p>
             {% if cases.id not in users.cases %}    
                 <a href="/add_to_library/{{cases.id}}">Add to Library</a>

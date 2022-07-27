@@ -1,5 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-
+from flask_app.models import justice
 
 class Case:
     db = "SCQuorum_schema"
@@ -12,6 +12,7 @@ class Case:
         self.decision_date = data['decision_date']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.justices = {}
     @classmethod
     def get_all( cls ):
         query = "SELECT * FROM cases"
@@ -27,4 +28,8 @@ class Case:
         cases = False
         if len(results) > 0:
             cases = cls(results[0])
+        query = "SELECT * FROM justices;"
+        results = connectToMySQL(cls.db).query_db( query )
+        for row in results:
+            cases.justices[row["id"]] = justice.Justice( row )
         return cases

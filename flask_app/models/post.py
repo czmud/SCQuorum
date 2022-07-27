@@ -1,4 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
+import datetime
 
 
 class Post:
@@ -38,3 +39,24 @@ class Post:
         is_valid = True
         
         return is_valid
+
+    @staticmethod
+    def time_left_until_post( data ):
+        print(4)
+        print(data["created_at"])
+        print(5)
+        print(datetime.datetime.now())
+        print(6)
+        time_left = datetime.datetime.now() - data["created_at"]
+        print(time_left)
+        time_limit = datetime.timedelta(hours=8)
+        print(time_limit)
+        time_as_percent = round(time_left/time_limit, 2)
+        print(time_as_percent)
+        if time_left > time_limit:
+            return False
+        
+
+        time_results = {"duration": time_left, }
+        
+        return False
