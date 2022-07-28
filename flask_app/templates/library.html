@@ -3,33 +3,55 @@
 {% block page_content %}
 
     <div class="col">
-        <h2>Posts</h2>
+        <h2 class="mt-3 mb-5">Posts</h2>
         {% for post in users.posts.values() %}
-        <br>--------------------<br>
-        <span>Posted at: {{post.created_at}}</span>
-        <span><i>"{{post.excerpt}}"</i></span>
-        <span>{{post.thought}}</span>
-        <a class="btn btn-warning" href="/retract_post/{{post.id}}" role="button">Retract</a><br><br>
+            {% if post.time_left %}
+            <div class="text-bg-dark rounded m-2 p-3">
+            {% else %}
+            <div class="text-bg-secondary rounded m-2 p-3">
+            {% endif %}
+                <span>Posted at: {{post.created_at}}</span>
+                <i>"{{post.excerpt}}"</i>
+                <span>{{post.thought}}</span>
+                {% if post.time_left %}
+                <div class="d-flex flex-row justify-content-end">
+                    <a class="btn btn-warning m-1" href="/retract_post/{{post.id}}" role="button">Retract</a>
+                </div>
+                <div class="row text-bg-light rounded p-1 mb-n1 mt-2">
+                    <div class="text-bg-danger rounded text-start overflow-auto" style="width: {{ post.time_left['percent'] }}%">
+                        {% if post.time_left['percent'] > 15 %}
+                        {{post.time_left['hours']}}h {{post.time_left['minutes']}}m
+                        {% elif post.time_left['percent'] > 5 %}
+                        {{post.time_left['minutes_raw']}}m
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
         {% endfor %}
     </div>
     <div class="col">
-        <h2>Notes</h2>
-        <a class="btn btn-info" href="/new_note" role="button">+new note</a>
+        <h2 class="mt-3 mb-5">Notes</h2>
         {% for note in users.notes.values() %}
-        <br>--------------------<br>
-        <span>Drafted at: {{note.created_at}}</span>
-        <span>{{note.excerpt}}</span>
-        <span>{{note.thought}}</span>
-        <a class="btn btn-success" href="/post_note/{{note.id}}" role="button">Post</a><br><br>
+        <div class="text-bg-secondary rounded m-2 p-3">
+            <span>Drafted at: {{note.created_at}}</span>
+            <i>"{{note.excerpt}}"</i>
+            <span>{{note.thought}}</span>
+            <br>
+            <div class="d-flex flex-row justify-content-end">
+                <a class="btn btn-warning m-1" href="/delete_note/{{note.id}}" role="button">Delete</a><br><br>
+                <a class="btn btn-success m-1" href="/post_note/{{note.id}}" role="button">Post</a><br><br>
+            </div>
+        </div>
         {% endfor %}
     </div>
     <div class="col">
-        <h2>Reading List</h2>
+        <h2 class="mt-3 mb-5">Reading List</h2>
         {% for case in users.cases.values() %}
-        <br>--------------------<br>
-        <h3><a href="/cases/{{case.id}}">{{case.title}}</a></h3>
-        <span>Decided: {{case.decision_date}}</span>
-        <br>
+        <div class="text-bg-secondary rounded m-2 p-3">
+            <h3><a class="link-info" href="/cases/{{case.id}}">{{case.title}}</a></h3>
+            <span>Decided: {{case.decision_date}}</span>
+        </div>
         {% endfor %}
     </div>
 

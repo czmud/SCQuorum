@@ -69,3 +69,10 @@ def post_to_note( post_id ):
     note.Note.save_from_post( data )
     post.Post.delete_post_by_id( {"id": post_id} )
     return redirect('/library')
+
+@app.route('/delete_note/<int:note_id>')
+def delete_note( note_id ):
+    if 'user_id' not in session:
+        return redirect('/')
+    note.Note.delete_note_by_id( {"id": note_id} )
+    return redirect('/library')

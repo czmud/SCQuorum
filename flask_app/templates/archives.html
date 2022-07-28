@@ -2,13 +2,13 @@
 
 {% block page_content %}
 
-    <div class="col">
-        <h1>Cases</h1>
+    <div class="col-6">
+        <h2 class="mt-3 mb-5">Cases</h2>
         {% for case in cases %}
-        <br>--------------------<br>
-        <h3><a href="/cases/{{case.id}}">{{case.title}}</a></h3>
-        <span>{{case.decision_date}}</span>
-        <br>
+        <div class="text-bg-secondary rounded m-2 p-3">
+            <h3><a class="link-info" href="/cases/{{case.id}}">{{case.title}}</a></h3>
+            <span>Decided: {{case.decision_date}}</span>
+        </div>
         {% endfor %}
     </div>
 

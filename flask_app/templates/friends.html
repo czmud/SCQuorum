@@ -3,28 +3,29 @@
 {% block page_content %}
 
     <div class="col">
-        <h1>Connect</h1>
+        <h2 class="mt-3 mb-5">Connect</h2>
         {% for user in all_users %}
             {% if user.id != users.id and user.id not in users.friends and user.id not in users.requests %}
-                <br>--------------------<br>
+            <div class="rounded m-2">
                 <h3>{{user.full_name}}</h3>
                 {% if user.id in users.requesteds %}
                     pending request
                 {% else%}
                     <a class="btn btn-info" href="/send_friend_request/{{user.id}}" role="button">+Request</a>
                 {% endif %}
+            </div>
             {% endif %}
         {% endfor %}
     </div>
     <div class="col">
-        <h1>Friends</h1>
+        <h2 class="mt-3 mb-5">Friends</h2>
         {% for friend in users.friends.values() %}
         <h3>{{friend.full_name}}</h3>
         <br>
         {% endfor %}
     </div>
     <div class="col">
-        <h1>Requests</h1>
+        <h2 class="mt-3 mb-5">Requests</h2>
         {% for request in users.requests.values() %}
         <h3>{{request.full_name}}</h3>
         <a class="btn btn-warning" href="/decline_friend_request/{{request.id}}" role="button">Decline</a>

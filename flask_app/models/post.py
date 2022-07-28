@@ -40,23 +40,20 @@ class Post:
         
         return is_valid
 
-    @staticmethod
-    def time_left_until_post( data ):
-        print(4)
-        print(data["created_at"])
-        print(5)
-        print(datetime.datetime.now())
-        print(6)
-        time_left = datetime.datetime.now() - data["created_at"]
-        print(time_left)
+    @property
+    def time_left( self ):
+        print(23)
+        time_posted = datetime.datetime.now() - self.created_at
         time_limit = datetime.timedelta(hours=8)
-        print(time_limit)
-        time_as_percent = round(time_left/time_limit, 2)
-        print(time_as_percent)
-        if time_left > time_limit:
+        if time_posted > time_limit:
             return False
         
+        time_remaining = time_limit - time_posted
+        time_as_percent = round(100*(time_remaining/time_limit), 1)
+        hours = time_remaining.seconds // 3600
+        minutes_raw = time_remaining.seconds // 60
+        minutes = time_remaining.seconds % 3600 // 60
 
-        time_results = {"duration": time_left, }
-        
-        return False
+        time_results = {"hours": hours, "minutes": minutes, "minutes_raw": minutes_raw, "percent": time_as_percent}
+        return time_results
+

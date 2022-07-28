@@ -67,7 +67,7 @@ class User:
                 users.notes[row["notes.id"]] = note.Note(note_data)
         # then separate query to get posts
         query = "SELECT posts.* FROM users JOIN posts on users.id = posts.user_id \
-            WHERE users.id=%(id)s;"
+            WHERE users.id=%(id)s ORDER BY created_at DESC;"
         results = connectToMySQL(cls.db).query_db(query, data)
         for row in results:
             users.posts[row["id"]] = post.Post(row)
