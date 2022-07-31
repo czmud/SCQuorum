@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-
         <div class="col-2"></div>
         <div class="col-8">
             <h1 class="mt-4 mb-2">{{cases.title}}</h1>
-            <span>{{cases.decision_date}}</span>
-            <H3>Majority Opinion delivered by: {{ cases.justices[cases.maj_opinion_justice_id].full_name }}</H3>
-            <p>{{cases.opinion_text}}</p>
+            <span>Decided: {{cases.decision_date}}</span>
+            <h3>Majority Opinion delivered by: {{ cases.justices[cases.maj_opinion_justice_id].full_name }}</h3>
+            <h4>Syllabus</h4>
+            <p id="hacky-string-holder" style="display: none">{{session.other_user_excerpt}}</p>
+            <p id="opinion-text">{{cases.opinion_text}}</p>
             {% if cases.id not in users.cases %}    
                 <a class="btn btn-success" href="/add_to_library/{{cases.id}}" role="button">Add to Library</a>
             {% else %}
@@ -19,15 +20,15 @@
         </div>
         <div class="col-2" id="note-form" style="visibility: hidden">
             <h2 class="mt-3 mb-5">New Note</h2>
-            <form action='/save_note' method='post'>
+            <form action='/save_note/{{cases.id}}' method='post'>
                 <label for='excerpt'>Excerpt:</label>
                 <input class="note-input" type='text' name='excerpt' value="{{session.excerpt}}" required><br>
-                <input type='hidden' name='url' value="{{cases.id}}" required><br>
                 <label for='thought'>Thought:</label>
                 <input class="note-input" type='text' name='thought' value="{{session.thought}}" required><br>
                 <a class="btn btn-warning" href="#" onclick="showHideNote()">Discard</a>
                 <input class="btn btn-success" type='submit' value='Save' role="button">
             </form>
         </div>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 {% endblock %}

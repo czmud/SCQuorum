@@ -8,7 +8,7 @@ bcrypt = Bcrypt(app)
 
 #define global reg expressions for data validation
 email_regex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
-
+password_regex = re.compile(r'^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$')
 class User:
     db = "SCQuorum_schema"
     def __init__( self , data ):
@@ -46,7 +46,17 @@ class User:
     @classmethod
     def get_user_by_id( cls, data ):
         query = "SELECT * FROM users LEFT JOIN notes on users.id = notes.user_id \
-            WHERE users.id=%(id)s;"
+            WHERE users.id=%(id)s ORDER BY notes.created_at DESC;"
+        results = connectToMySQL(cls.db).query_db(query, data)
+        users = False
+        if len(results) > 0:
+            users = cls(results[0])
+        return users
+
+    @classmethod
+    def get_user_with_notes_by_id( cls, data ):
+        query = "SELECT * FROM users LEFT JOIN notes on users.id = notes.user_id \
+            WHERE users.id=%(id)s ORDER BY notes.created_at DESC;"
         results = connectToMySQL(cls.db).query_db(query, data)
         users = False
         if len(results) > 0:
@@ -72,12 +82,13 @@ class User:
         for row in results:
             users.posts[row["id"]] = post.Post(row)
         # and another query to get library items
-        query = "SELECT cases.* FROM libraries JOIN cases \
-            ON libraries.case_id = cases.id WHERE libraries.user_id = %(id)s;"
+        query = "SELECT cases.* FROM libraries JOIN cases ON libraries.case_id \
+            = cases.id WHERE libraries.user_id = %(id)s ORDER BY created_at DESC;"
         results = connectToMySQL(cls.db).query_db(query, data)
         for row in results:
             users.cases[row["id"]] = case.Case(row)
         return users
+    
     @classmethod
     def get_user_with_friends_by_id( cls, data ):
         query = "SELECT users.*, users2.* FROM users LEFT JOIN friends on users.id = friends.user_id \
@@ -111,6 +122,7 @@ class User:
         for row in results:
             users.requesteds[row["id"]] = cls( row )
         return users
+    
     @classmethod
     def get_user_with_library_by_id( cls, data ):
         query = "SELECT * FROM users WHERE id = %(id)s;"
@@ -124,7 +136,6 @@ class User:
         for row in results:
             users.cases[row["id"]] = case.Case( row )
         return users
-
 
     @classmethod
     def get_user_with_viewable_posts_by_id( cls, data ):
@@ -201,8 +212,13 @@ class User:
         if len(data["password"]) < 8:
             is_valid = False
             flash("password must be at least 8 characters", "register")
-        # confirmation must also be 8 characters
+        elif not password_regex.match(data['password']):
+            is_valid = False
+            flash("must enter valid password", "register")
         elif len(data["password_confirm"]) < 8:
+            is_valid = False
+            flash("passwords and confirmation do not match", "register")
+        elif not password_regex.match(data['password_confirm']):
             is_valid = False
             flash("passwords and confirmation do not match", "register")
         # password and confirmation must match
@@ -221,6 +237,9 @@ class User:
             flash("email and password combination did not match", "login")
             return False
         if len(data["password"]) < 8:
+            flash("email and password combination did not match", "login")
+            return False
+        elif not password_regex.match(data['password']):
             flash("email and password combination did not match", "login")
             return False
         return True

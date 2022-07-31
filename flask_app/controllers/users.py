@@ -4,6 +4,8 @@ from flask_app.models import user
 
 @app.route('/')
 def index():
+    if 'user_id' in session:
+        return redirect('/library')
     return render_template("index.html")
 
 @app.route('/user_register/', methods=["POST"])
@@ -47,7 +49,9 @@ def log_user_in():
 def library():
     if 'user_id' not in session:
         return redirect('/')
-    users = user.User.get_user_by_id( {"id": session["user_id"]})
+    if 'other_user_excerpt' in session:
+        session.pop('other_user_excerpt')
+    users = user.User.get_user_with_notes_by_id( {"id": session["user_id"]})
     
     return render_template("library.html", users=users)
 

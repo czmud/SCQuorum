@@ -7,6 +7,8 @@ from flask_app.models import user, friend, request
 def display_all_friends_by_user():
     if 'user_id' not in session:
         return redirect('/')
+    if 'other_user_excerpt' in session:
+        session.pop('other_user_excerpt')
     users = user.User.get_user_with_friends_by_id( {"id": session["user_id"]} )
     all_users = user.User.get_all()
     return render_template("friends.html", users=users, all_users=all_users)

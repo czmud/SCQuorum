@@ -10,22 +10,21 @@ def draft_new_note():
     return render_template("notenew.html", users=users)
 
 
-@app.route('/save_note/', methods=["POST"])
-def save_new_note():
+@app.route('/save_note/<int:case_id>/', methods=["POST"])
+def save_new_note(case_id):
     if not note.Note.validate_note(request.form):
         session["excerpt"] = request.form["excerpt"]
-        session["url"] = request.form["url"]
         session["thought"] = request.form["thought"]
         return redirect('/new_note')
     
     data = {
         "user_id": session["user_id"],
-        "excerpt": request.form["excerpt"],
-        "url": request.form["url"],
-        "thought": request.form["thought"]
+        "excerpt": request.form["excerpt"].strip().replace("%","%%"),
+        "url": case_id,
+        "thought": request.form["thought"].replace("%","%%")
     }
     note.Note.save( data )
-    return redirect('/library')
+    return redirect('/cases/'+str(case_id))
 
 @app.route('/post_note/<int:note_id>/')
 def note_to_post( note_id ):

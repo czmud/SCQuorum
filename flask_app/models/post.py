@@ -25,10 +25,10 @@ class Post:
     def get_post_by_id( cls, data ):
         query = "SELECT * FROM posts WHERE id=%(id)s;"
         results = results = connectToMySQL(cls.db).query_db( query, data )
-        notes = False
+        posts = False
         if len(results) > 0:
-            notes = cls(results[0])
-        return notes
+            posts = cls(results[0])
+        return posts
     @classmethod
     def delete_post_by_id( cls, data ):
         query = "DELETE FROM posts WHERE id=%(id)s;"
@@ -42,7 +42,6 @@ class Post:
 
     @property
     def time_left( self ):
-        print(23)
         time_posted = datetime.datetime.now() - self.created_at
         time_limit = datetime.timedelta(hours=8)
         if time_posted > time_limit:

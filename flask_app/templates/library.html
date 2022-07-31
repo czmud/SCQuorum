@@ -10,15 +10,15 @@
             {% else %}
             <div class="text-bg-secondary rounded m-2 p-3">
             {% endif %}
-                <span>Posted at: {{post.created_at}}</span>
-                <i>"{{post.excerpt}}"</i>
-                <span>{{post.thought}}</span>
+                <p class="mb-4"><i><a class="link-info"href="/cases_redirect_from_post/{{post.url}}/{{post.id}}">"{{post.excerpt}}"</a></i></p>
+                <p class="mb-4">{{post.thought}}</p>
                 {% if post.time_left %}
-                <div class="d-flex flex-row justify-content-end">
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                    <p>Posted at: {{post.created_at}}</p>
                     <a class="btn btn-warning m-1" href="/retract_post/{{post.id}}" role="button">Retract</a>
                 </div>
                 <div class="row text-bg-light rounded p-1 mb-n1 mt-2">
-                    <div class="text-bg-danger rounded text-start overflow-auto" style="width: {{ post.time_left['percent'] }}%">
+                    <div class="text-bg-danger rounded text-start overflow-auto" style='width:{{ post.time_left["percent"] }}%'>
                         {% if post.time_left['percent'] > 15 %}
                         {{post.time_left['hours']}}h {{post.time_left['minutes']}}m
                         {% elif post.time_left['percent'] > 5 %}
@@ -35,10 +35,10 @@
         {% for note in users.notes.values() %}
         <div class="text-bg-secondary rounded m-2 p-3">
             <span>Drafted at: {{note.created_at}}</span>
-            <i>"{{note.excerpt}}"</i>
-            <span>{{note.thought}}</span>
+            <p class="mb-4"><i><a class="link-info"href="/cases_redirect_from_note/{{note.url}}/{{note.id}}">"{{note.excerpt}}"</a></i></p>
+            <p class="m-0">{{note.thought}}</p>
             <br>
-            <div class="d-flex flex-row justify-content-end">
+            <div class="d-flex flex-row justify-content-end p-2">
                 <a class="btn btn-warning m-1" href="/delete_note/{{note.id}}" role="button">Delete</a><br><br>
                 <a class="btn btn-success m-1" href="/post_note/{{note.id}}" role="button">Post</a><br><br>
             </div>

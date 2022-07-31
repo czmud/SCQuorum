@@ -6,11 +6,13 @@
         <h2 class="mt-3 mb-5">Quorum</h2>
         {% for post in users.posts.values() %}
             {% if not post.time_left %}    
-            <div class="text-bg-secondary rounded m-2">
-                <h3>{{post.users[0].full_name}}</h3>
-                <span>Posted at {{post.created_at}}</span>
-                <span>Excerpt: <i>"{{post.excerpt}}"</i></span>
-                <span>Thought: {{post.thought}}</span>
+            <div class="text-bg-secondary rounded m-2 p-3">
+                <div class="d-flex justify-content-between px-3">
+                    <h3>{{post.users[0].full_name}}</h3>
+                    <p>Posted at {{post.created_at}}</p>
+                </div>
+                <p class="mb-4"><i><a class="link-info"href="/cases_redirect_from_post/{{post.url}}/{{post.id}}">"{{post.excerpt}}"</a></i></p>
+                <p>{{post.thought}}</p>
             </div>
             {% endif %}
         {% endfor %}
