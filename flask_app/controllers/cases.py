@@ -6,6 +6,8 @@ from flask_app.models import case, user, library, post, note
 def view_all_opinions():
     if 'user_id' not in session:
         return redirect('/')
+    if 'other_user_excerpt' in session:
+        session.pop('other_user_excerpt')
     users = user.User.get_user_by_id( {"id": session["user_id"]} )
     cases = case.Case.get_all()
     return render_template("archives.html", users=users, cases=cases)

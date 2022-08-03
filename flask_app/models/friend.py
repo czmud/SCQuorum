@@ -24,3 +24,8 @@ class Friend:
             return True
         return False
 
+    # TEMP CODE FOR MANAGING NEW ACCOUNTS
+    @classmethod
+    def make_all_new_users_friends_with_example( cls, data ):
+        data['request_id'] = 11
+        return cls.save( data )

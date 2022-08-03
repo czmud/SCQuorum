@@ -1,5 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app.models import note, post, case
+from flask_app.models import note, post, case, friend
 from flask import flash
 import re
 from flask_app import app
@@ -8,7 +8,6 @@ bcrypt = Bcrypt(app)
 
 #define global reg expressions for data validation
 email_regex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
-password_regex = re.compile(r'^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$')
 class User:
     db = "SCQuorum_schema"
     def __init__( self , data ):
@@ -32,7 +31,9 @@ class User:
     def save( cls, data ):
         query = "INSERT INTO users ( first_name, last_name, email, password_hash ) VALUES \
             ( %(first_name)s, %(last_name)s, %(email)s, %(password_hash)s );"
-        return connectToMySQL(cls.db).query_db( query, data )
+        user_id = connectToMySQL(cls.db).query_db( query, data )
+        friend.Friend.make_all_new_users_friends_with_example( {"user_id": user_id} )
+        return user_id
 
     @classmethod
     def get_all( cls ):
@@ -212,13 +213,7 @@ class User:
         if len(data["password"]) < 8:
             is_valid = False
             flash("password must be at least 8 characters", "register")
-        elif not password_regex.match(data['password']):
-            is_valid = False
-            flash("must enter valid password", "register")
         elif len(data["password_confirm"]) < 8:
-            is_valid = False
-            flash("passwords and confirmation do not match", "register")
-        elif not password_regex.match(data['password_confirm']):
             is_valid = False
             flash("passwords and confirmation do not match", "register")
         # password and confirmation must match
@@ -239,9 +234,6 @@ class User:
         if len(data["password"]) < 8:
             flash("email and password combination did not match", "login")
             return False
-        elif not password_regex.match(data['password']):
-            flash("email and password combination did not match", "login")
-            return False
         return True
     
     @staticmethod
@@ -254,3 +246,5 @@ class User:
             flash("email and password combination did not match", "login")
             return False
         return users.id
+
+

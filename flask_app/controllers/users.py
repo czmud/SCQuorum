@@ -17,14 +17,14 @@ def register_new_user():
         return redirect('/')
     
     data = {
-        "first_name": request.form["first_name"].title(),
-        "last_name": request.form["last_name"].title(),
+        "first_name": request.form["first_name"],
+        "last_name": request.form["last_name"],
         "email": request.form["email"],
         "password_hash": user.User.hash_password(request.form)
     }
     session.clear()
     session["user_id"] = user.User.save(data)
-    return redirect('/library')
+    return redirect('/landing_page')
 
 
 @app.route('/user_login/', methods=["POST"])
@@ -41,8 +41,14 @@ def log_user_in():
     return redirect('/library')
 
 
-
-
+@app.route('/landing_page/')
+def landing_page():
+    if 'user_id' not in session:
+        return redirect('/')
+    if 'other_user_excerpt' in session:
+        session.pop('other_user_excerpt')
+    users = user.User.get_user_by_id( {"id": session["user_id"]})
+    return render_template("landingpage.html", users=users)
 
 
 @app.route('/library/')
