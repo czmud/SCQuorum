@@ -19,9 +19,9 @@ def save_new_note(case_id):
     
     data = {
         "user_id": session["user_id"],
-        "excerpt": request.form["excerpt"].strip().replace("%","%%"),
+        "excerpt": request.form["excerpt"].strip().replace("%","%%"), #added to prevent '%' from breaking SQL query
         "url": case_id,
-        "thought": request.form["thought"].replace("%","%%")
+        "thought": request.form["thought"].replace("%","%%") #added to prevent '%' from breaking SQL query
     }
     note.Note.save( data )
     return redirect('/cases/'+str(case_id))
@@ -34,10 +34,10 @@ def note_to_post( note_id ):
 
     data = {
         "user_id": notes.user_id,
-        "excerpt": notes.excerpt,
+        "excerpt": notes.excerpt.replace("%","%%"), #added to prevent '%' from breaking SQL query
         "url": notes.url,
         "url_pointer": notes.url_pointer,
-        "thought": notes.thought,
+        "thought": notes.thought.replace("%","%%"), #added to prevent '%' from breaking SQL query
         "note_created_at": notes.created_at,
         "note_updated_at": notes.updated_at
     }
@@ -57,10 +57,10 @@ def post_to_note( post_id ):
 
     data = {
         "user_id": posts.user_id,
-        "excerpt": posts.excerpt,
+        "excerpt": posts.excerpt.replace("%","%%"), #added to prevent '%' from breaking SQL query
         "url": posts.url,
         "url_pointer": posts.url_pointer,
-        "thought": posts.thought,
+        "thought": posts.thought.replace("%","%%"), #added to prevent '%' from breaking SQL query
         "created_at": posts.note_created_at,
         "updated_at": posts.note_updated_at
     }
