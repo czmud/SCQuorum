@@ -1,6 +1,7 @@
 from flask_app import app
 from flask import render_template,redirect,request,session,flash
-from flask_app.models import user
+from flask_app.models import user, case
+import datetime
 
 @app.route('/')
 def index():
@@ -48,7 +49,13 @@ def landing_page():
     if 'other_user_excerpt' in session:
         session.pop('other_user_excerpt')
     users = user.User.get_user_by_id( {"id": session["user_id"]})
-    return render_template("landingpage.html", users=users)
+    example_library = user.User.get_user_with_notes_by_id( {"id": 15} )
+    example_library.posts[40].created_at = datetime.datetime.now().replace(microsecond=0) - datetime.timedelta(hours=2, minutes=27)
+    cases = case.Case.get_all()
+    example_friends = user.User.get_user_with_friends_by_id( {"id": 15} )
+    all_users = user.User.get_all()
+    example_quorum = user.User.get_user_with_viewable_posts_by_id( {"id": 15} )
+    return render_template("landingpage.html", users=users, example_library=example_library, cases=cases, example_friends=example_friends, all_users=all_users, example_quorum=example_quorum)
 
 
 @app.route('/library/')

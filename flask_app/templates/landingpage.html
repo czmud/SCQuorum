@@ -2,12 +2,194 @@
 
 
 {% block page_content %}
+<div class="col-8">
+    <h2 class="my-3">Welcome to SCQuorum!</h2>
+    <p> Supreme Court Quorum is a one-stop-shop for all you Supreme Court Case reading needs... err well maybe one day it will be. Mind our dust as we get this essential resource up to speed.</p>
+    <p class="mt-1"> In the meantime, see below for some examples of what to expect on SQCuorum: </p>
+</div>
 
-        <div class="col-8">
-            <h3>Welcome to SCQuorum!</h3>
-            <p> Supreme Court Quorum is a one-stop-shop for all you Supreme Court reading needs... err well maybe one day it will be. Mind our dust as we get the essential resource up to speed.</p>
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Library
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">            
+            <div class="accordion-body d-flex flex-column">
+                <div class="d-flex justify-content-center">
+                    <div class="col mt-3 mb-4">
+                        <p class="text-success">The Library Tab is your home. This is where you manage the resources you are currently digesting.</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="col-4 d-flex flex-column p-4 justify-content-end">
+                        <p class="text-success">Posts are Notes that you want to share with your friends. Once you have had the time to thoroughly think over an idea, share it with your friends to get some feedback</p>
+                        <p class="text-success">SCQuorum implements a 8-hour posting window, to discourage users from posting things they might later regret saying. Posts remain hidden until 8-hours have passed. During this period a Post can be retracted</p>
+                    </div>
+                    <div class="col-4 d-flex flex-column p-4 justify-content-end">
+                        <p class="text-success">Notes are for your own personal study. They can be reminders or miscellaneous thoughts you are having while reading supreme court cases. Save a good excerpt as a way to easily come back to it again in the future. </p>
+                        <p class="text-success">Notes can be added while on the page for reading Supreme Court Cases</p>
+                        <p class="text-success">Remember, not all notes need be posted. This is your personal space for thoughts! </p>
+                    </div>
+                    <div class="col-4 d-flex flex-column p-4 justify-content-end">
+                        <p class="text-success">Keep track of the Cases you are currently reading by adding them to your library.</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="col">
+                        <h2 class="mt-3 mb-5">Posts</h2> 
+                        {% for post in example_library.posts.values() %}
+                        {% if post.time_left %}
+                        <div class="text-bg-dark rounded m-2 p-3">
+                            {% else %}
+                            <div class="text-bg-secondary rounded m-2 p-3">
+                                {% endif %}
+                                <p class="mb-4"><i><a class="link-info"href="/cases_redirect_from_post/{{post.url}}/{{post.id}}">"{{post.excerpt}}"</a></i></p>
+                                <p class="mb-4">{{post.thought}}</p>
+                                {% if post.time_left %}
+                                <div class="d-flex flex-row justify-content-between align-items-center">
+                                    <p>Posted at: {{post.created_at}}</p>
+                                <a class="btn btn-warning m-1" href="#" role="button">Retract</a>
+                            </div>
+                            <div class="row text-bg-light rounded p-1 mb-n1 mt-2">
+                                <div class="text-bg-danger rounded text-start overflow-auto" style='width:{{ post.time_left["percent"] }}%'>
+                                    {% if post.time_left['percent'] > 15 %}
+                                    {{post.time_left['hours']}}h {{post.time_left['minutes']}}m
+                                    {% elif post.time_left['percent'] > 5 %}
+                                    {{post.time_left['minutes_raw']}}m
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="d-flex flex-row justify-content-between align-items-center">
+                                <p>Posted at: {{post.created_at}}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    </div>
+                    <div class="col">
+                        <h2 class="mt-3 mb-5">Notes</h2>
+                        {% for note in example_library.notes.values() %}
+                        <div class="text-bg-secondary rounded m-2 p-3">
+                            <span>Drafted at: {{note.created_at}}</span>
+                            <p class="mb-4"><i><a class="link-info"href="/cases_redirect_from_note/{{note.url}}/{{note.id}}">"{{note.excerpt}}"</a></i></p>
+                            <p class="m-0">{{note.thought}}</p>
+                            <br>
+                            <div class="d-flex flex-row justify-content-end p-2">
+                                <a class="btn btn-warning m-1" href="#" role="button">Delete</a><br><br>
+                                <a class="btn btn-success m-1" href="#" role="button">Post</a><br><br>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col">
+                        <h2 class="mt-3 mb-5">Reading List</h2>
+                        {% for case in example_library.cases.values() %}
+                        <div class="text-bg-secondary rounded m-2 p-3">
+                            <h3><a class="link-info" href="/cases/{{case.id}}">{{case.title}}</a></h3>
+                            <span>Decided: {{case.decision_date}}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Archives
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body d-flex justify-content-center">
+                <div class="col-6">
+                    <p class="text-success">The archives are where you come when you need to search for a Supreme Court Case to read. Stay tuned... One day we hope to expand our archives to connect to an API, giving our users a full selection of Supreme court cases to read.</p>
+                    <h2 class="mt-3 mb-5">Cases</h2>
+                    <div class="text-bg-secondary rounded m-2 p-3">
+                        <h3><a class="link-info" href="/cases/{{cases[0].id}}">{{cases[0].title}}</a></h3>
+                        <span>Decided: {{cases[0].decision_date}}</span>
+                    </div>
+                    <div class="text-bg-secondary rounded m-2 p-3">
+                        <h3><a class="link-info" href="/cases/{{cases[1].id}}">{{cases[1].title}}</a></h3>
+                        <span>Decided: {{cases[1].decision_date}}</span>
+                    </div>
+                    <p class="text-success my-5">. . .See full list of cases on the Archives Tab</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Friends
+            </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+            <div class="accordion-body d-flex flex-column">
+                <div class="d-flex justify-content-center">
+                    <div class="col-5">
+                        <p class="text-success">Similar to most social media sites, on the Friends Tab you can connect with other users, view your own friends, and respond to requests.</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="col">
+                        <h2 class="mt-3 mb-5">Connect</h2>
+                        <div class="rounded m-2">
+                            <h3>{{all_users[19].full_name}}</h3>
+                            <a class="btn btn-info" href="#" role="button">+Request</a>
+                        </div>
+                        <div class="rounded m-2">
+                            <h3>{{all_users[17].full_name}}</h3>
+                        <a class="btn btn-info" href="#" role="button">+Request</a>
+                    </div>
+                    </div>
+                    <div class="col">
+                        <h2 class="mt-3 mb-5">Friends</h2>
+                        <h3>{{all_users[20].full_name}}</h3>
+                        <br>
+                    </div>
+                    <div class="col">
+                        <h2 class="mt-3 mb-5">Requests</h2>
+                        <h3>{{all_users[18].full_name}}</h3>
+                        <a class="btn btn-warning" href="#" role="button">Decline</a>
+                        <a class="btn btn-success" href="#" role="button">Accept</a>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                Quorum
+            </button>
+        </h2>
+        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+            <div class="accordion-body d-flex justify-content-center">
+                <div class="col-6">
+                    <p class="text-success">Finally, the Quorum is where you can view the posts from all your friends (including your own, Example User). Also note that posts that have not reached the 8 hour mark do not show up here yet.</p>
+                    <h2 class="mt-3 mb-5">Quorum</h2>
+                    {% for post in example_quorum.posts.values() %}
+                        {% if not post.time_left %}
+                        <div class="text-bg-secondary rounded m-2 p-3">
+                            <div class="d-flex justify-content-between px-3">
+                                <h3>{{post.users[0].full_name}}</h3>
+                                <p>Posted at {{post.created_at}}</p>
+                            </div>
+                            <p class="mb-4"><i><a class="link-info"href="/cases_redirect_from_post/{{post.url}}/{{post.id}}">"{{post.excerpt}}"</a></i></p>
+                            <p>{{post.thought}}</p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

@@ -26,6 +26,10 @@
                         {% endif %}
                     </div>
                 </div>
+                {% else %}
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                    <p>Posted at: {{post.created_at}}</p>
+                </div>
                 {% endif %}
             </div>
         {% endfor %}
