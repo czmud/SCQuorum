@@ -191,11 +191,11 @@ class User:
     def validate_user_form(data):
         is_valid = True
         # name validations, must be at least 3 characters
-        if len(data["first_name"]) < 3:
-            flash("first name must be at least 3 characters long", "register")
+        if len(data["first_name"]) < 1:
+            flash("first name must be at least 1 character long", "register")
             is_valid = False
-        if len(data["last_name"]) < 3:
-            flash("last name must be at least 3 characters long", "register")
+        if len(data["last_name"]) < 1:
+            flash("last name must be at least 1 character long", "register")
             is_valid = False
         # email field must be present
         if len(data["email"]) < 1:
