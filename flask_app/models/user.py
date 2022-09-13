@@ -43,6 +43,19 @@ class User:
         for row in results:
             users[row["id"]] = cls(row)
         return users
+    
+    @classmethod
+    def get_five_by_search( cls, data ):
+        query = "SELECT * FROM users WHERE ( users.first_name LIKE %(search_text)s \
+            OR users.last_name LIKE %(search_text)s ) AND users.id <> %(user_id)s LIMIT 5;"
+        results = connectToMySQL(cls.db).query_db(query, data)
+        users = []
+        for row in results:
+            users.append({
+                "id": row["id"],
+                "full_name": cls(row).full_name
+            })
+        return users
 
     @classmethod
     def get_user_by_id( cls, data ):
