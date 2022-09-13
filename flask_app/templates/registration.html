@@ -1,0 +1,49 @@
+{% extends "baselogin.html" %}
+
+{% block page_content %}
+
+        <div class="col">
+            <h1>Register</h1>
+            {% with messages = get_flashed_messages(category_filter=["register"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            <p class="text-danger">{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div class="d-flex justify-content-center">
+
+                <table>
+                    <form action='/user_register' method='post'>
+                    <tbody>
+                        <tr>
+                            <td><label for='first_name'>First Name:</label>
+                                <td><input type='text' name='first_name' value="{{session.first_name}}" required></td>
+                            </tr>
+                            <tr>
+                            <td><label for='last_name'>Last Name:</label></td>
+                            <td><input type='text' name='last_name' value="{{session.last_name}}" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for='email'>Email:</label></td>
+                            <td><input type='text' name='email' value="{{session.email}}" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for='password'>Password:</label></td>
+                            <td><input type='password' name='password' required></td>
+                        </tr>
+                        <tr>
+                            <td><label for='password_confirm'>Confirm Pw:</label></td>
+                            <td><input type='password' name='password_confirm' required></td>
+                        </tr>
+                        <tr>
+                            <td><input type='submit' value='Register'></td>
+                        </tr>
+                    </tbody>
+                    </form>
+                </table>
+            </div>
+            <a href="/">Already have an account? Login</a>
+        </div>
+
+{% endblock %}
