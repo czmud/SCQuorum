@@ -47,7 +47,11 @@ class User:
     @classmethod
     def get_five_by_search( cls, data ):
         query = "SELECT * FROM users WHERE ( users.first_name LIKE %(search_text)s \
-            OR users.last_name LIKE %(search_text)s ) AND users.id <> %(user_id)s LIMIT 5;"
+            OR users.last_name LIKE %(search_text)s ) AND users.id <> %(user_id)s \
+            AND users.id NOT IN ( SELECT friends.friend_id FROM friends WHERE friends.user_id = %(user_id)s ) \
+            AND users.id NOT IN ( SELECT requests.request_id FROM requests WHERE requests.user_id = %(user_id)s )\
+            AND users.id NOT IN ( SELECT requests.user_id FROM requests WHERE requests.request_id = %(user_id)s )\
+            LIMIT 5;"
         results = connectToMySQL(cls.db).query_db(query, data)
         users = []
         for row in results:

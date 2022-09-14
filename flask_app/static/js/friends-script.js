@@ -1,6 +1,5 @@
 let count = 0;
-let searchText = "";
-
+let searchText = document.getElementById('friend-search-input').value;
 const user_id = document.getElementById('user-id-from-session').value;
 
 function handleTextInput(event){
@@ -33,9 +32,9 @@ function friendsSearch(searchText, user_id){
         .then( data => {
             ( data.message.length > 0 ?
                 data.message.map( friend => (
-                    innerHTML += "<div class='rounded m-2'>"
-                    +"<h3>"+friend.full_name+"</h3>"
-                    +"<a class='btn btn-info' href='/send_friend_request/"+friend.id+"' role='button'>+Request</a>"
+                    innerHTML += "<div class='d-flex justify-content-center align-items-center m-2'>"
+                    +"<h3 class='mx-2'>"+friend.full_name+"</h3>"
+                    +"<a class='btn btn-info mx-2' href='/send_friend_request/"+friend.id+"' role='button'>+Request</a>"
                     +"</div>"))
             :
             innerHTML += "<div class='rounded m-2'>"
@@ -45,3 +44,5 @@ function friendsSearch(searchText, user_id){
         element.innerHTML = innerHTML;
         })
 }
+
+friendsSearch( searchText, user_id );
