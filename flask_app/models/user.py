@@ -8,6 +8,7 @@ bcrypt = Bcrypt(app)
 
 #define global reg expressions for data validation
 email_regex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+name_regex = re.compile(r'^[a-zA-Z]+$')
 class User:
     db = "SCQuorum_schema"
     def __init__( self , data ):
@@ -211,8 +212,14 @@ class User:
         if len(data["first_name"]) < 1:
             flash("first name must be at least 1 character long", "register")
             is_valid = False
+        elif not name_regex.match(data["first_name"]):
+            flash("first name must only contain alpha characters", "register")
+            is_valid = False
         if len(data["last_name"]) < 1:
             flash("last name must be at least 1 character long", "register")
+            is_valid = False
+        elif not name_regex.match(data["last_name"]):
+            flash("last name must only contain alpha characters", "register")
             is_valid = False
         # email field must be present
         if len(data["email"]) < 1:
