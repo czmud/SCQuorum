@@ -4,18 +4,13 @@
 
     <div class="col">
         <h2 class="mt-3 mb-5">Connect</h2>
-        {% for user in all_users.values() %}
-            {% if user.id != users.id and user.id not in users.friends and user.id not in users.requests %}
-            <div class="rounded m-2">
-                <h3>{{user.full_name}}</h3>
-                {% if user.id in users.requesteds %}
-                    pending request
-                {% else%}
-                    <a class="btn btn-info" href="/send_friend_request/{{user.id}}" role="button">+Request</a>
-                {% endif %}
-            </div>
-            {% endif %}
-        {% endfor %}
+        <form onsubmit="searchButtonClick(event)">
+            <input id="user-id-from-session" type="hidden" value={{users.id}}>
+            <input id="friend-search-input" oninput="handleTextInput(event)" placeholder="Search for users to request"/>
+            <input type="submit"value="Search">
+        </form>
+        <div id="friend-search-results">
+        </div>
     </div>
     <div class="col">
         <h2 class="mt-3 mb-5">Friends</h2>
@@ -27,11 +22,19 @@
     <div class="col">
         <h2 class="mt-3 mb-5">Requests</h2>
         {% for request in users.requests.values() %}
-        <h3>{{request.full_name}}</h3>
-        <a class="btn btn-warning" href="/decline_friend_request/{{request.id}}" role="button">Decline</a>
-        <a class="btn btn-success" href="/accept_friend_request/{{request.id}}" role="button">Accept</a>
-        <br>
+        <div class="d-flex justify-content-center my-2">
+            <h3 class="mx-2">{{request.full_name}}</h3>
+            <a class="btn btn-warning mx-2" href="/decline_friend_request/{{request.id}}" role="button">Decline</a>
+            <a class="btn btn-success mx-2" href="/accept_friend_request/{{request.id}}" role="button">Accept</a>
+        </div>
+        {% endfor %}
+        {% for requesteds in users.requesteds.values() %}
+        <div class="d-flex justify-content-center my-2 align-items-center">
+            <h3 class="mx-2">{{requesteds.full_name}}</h3>
+            <p class="text-info pt-2 mx-2">request pending</p>
+        </div>
         {% endfor %}
     </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/friends-script.js') }}"></script>
 
 {% endblock %}

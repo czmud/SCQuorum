@@ -1,4 +1,4 @@
-from flask_app.controllers import users, notes, friends, posts, cases
+from flask_app.controllers import users, notes, friends, posts, cases, friendsAPI
 from flask_app import app
 
 if __name__ == "__main__":

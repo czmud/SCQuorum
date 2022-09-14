@@ -10,8 +10,7 @@ def display_all_friends_by_user():
     if 'other_user_excerpt' in session:
         session.pop('other_user_excerpt')
     users = user.User.get_user_with_friends_by_id( {"id": session["user_id"]} )
-    all_users = user.User.get_all()
-    return render_template("friends.html", users=users, all_users=all_users)
+    return render_template("friends.html", users=users )
 
 @app.route('/accept_friend_request/<int:request_id>')
 def accept_friend_request( request_id ):
