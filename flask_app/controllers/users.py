@@ -9,13 +9,19 @@ def index():
         return redirect('/library')
     return render_template("index.html")
 
+@app.route('/registration/')
+def registration_form():
+    if 'user_id' in session:
+        return redirect('/library')
+    return render_template("registration.html")
+
 @app.route('/user_register/', methods=["POST"])
 def register_new_user():
     if not user.User.validate_user_form(request.form):
         session["first_name"] = request.form["first_name"]
         session["last_name"] = request.form["last_name"]
         session["email"] = request.form["email"]
-        return redirect('/')
+        return redirect('/registration')
     
     data = {
         "first_name": request.form["first_name"],
@@ -27,7 +33,6 @@ def register_new_user():
     session["user_id"] = user.User.save(data)
     return redirect('/landing_page')
 
-
 @app.route('/user_login/', methods=["POST"])
 def log_user_in():
     if not user.User.validate_login_form(request.form):
@@ -38,9 +43,7 @@ def log_user_in():
     if not session["user_id"]:
         session["email_login"] = request.form["email"]
         session.pop("user_id")
-
     return redirect('/library')
-
 
 @app.route('/landing_page/')
 def landing_page():
@@ -57,7 +60,6 @@ def landing_page():
     example_quorum = user.User.get_user_with_viewable_posts_by_id( {"id": 15} )
     return render_template("landingpage.html", users=users, example_library=example_library, cases=cases, example_friends=example_friends, all_users=all_users, example_quorum=example_quorum)
 
-
 @app.route('/library/')
 def library():
     if 'user_id' not in session:
@@ -67,11 +69,6 @@ def library():
     users = user.User.get_user_with_notes_by_id( {"id": session["user_id"]})
     
     return render_template("library.html", users=users)
-
-
-
-
-
 
 @app.route('/user_logout/')
 def log_user_out():
