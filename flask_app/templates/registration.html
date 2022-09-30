@@ -3,7 +3,7 @@
 {% block page_content %}
 
         <div class="col">
-            <h1>Register</h1>
+            <h1 class="my-4">Register</h1>
             {% with messages = get_flashed_messages(category_filter=["register"]) %}
             {% if messages %}
             {% for message in messages %}
@@ -52,10 +52,17 @@
                     </form>
                 </table>
             </div>
-            <p>
+            <p class="my-3">
                 Already have an account? 
                 <a href="/">Login</a>
             </p>
+            <div class="my-5">
+                <form action='/user_login' method='post'>
+                    <input type="hidden" name="email" value="guestaccount@mail.com">
+                    <input type="hidden" name="password" value="password">
+                    <button type="submit" class="btn btn-info">Continue as Guest</button>
+                </form>
+            </div>
         </div>
 
 {% endblock %}

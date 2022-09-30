@@ -3,7 +3,7 @@
 {% block page_content %}
 
         <div class="col">
-            <h1>Log in </h1>
+            <h1 class="my-4">Log in </h1>
             {% with messages = get_flashed_messages(category_filter=["login"]) %}
             {% if messages %}
             {% for message in messages %}
@@ -32,10 +32,18 @@
                     </div>
                 </form>
             </div>
-            <p>
+            <p class="my-3">
                 New to SCQuorum? 
                 <a href="/registration/">Create an Account</a>
             </p>
+            <div class="my-5">
+                <form action='/user_login' method='post'>
+                    <input type="hidden" name="email" value="guestaccount@mail.com">
+                    <input type="hidden" name="password" value="password">
+                    <button type="submit" class="btn btn-info">Continue as Guest</button>
+                </form>
+            </div>
+
         </div>
 
 {% endblock %}
