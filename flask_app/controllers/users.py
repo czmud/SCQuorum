@@ -43,6 +43,8 @@ def log_user_in():
     if not session["user_id"]:
         session["email_login"] = request.form["email"]
         session.pop("user_id")
+    if request.form["email"] == 'guestaccount@mail.com':
+        return redirect('/landing_page')
     return redirect('/library')
 
 @app.route('/landing_page/')
